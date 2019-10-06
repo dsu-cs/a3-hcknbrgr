@@ -45,6 +45,7 @@ private:
     std::vector<T> *inOrderHelper(std::vector<T>*, Node<T>*);
     std::vector<T> *preOrderHelper(std::vector<T>*, Node<T>*);
     std::vector<T> *postOrderHelper(std::vector<T>*, Node<T>*);
+
     
         
 };
@@ -93,8 +94,6 @@ template<class T>
     return vec;
 }
 
-
-
 template<class T>
 void BST<T>::insert(T new_data)
 {
@@ -106,7 +105,24 @@ void BST<T>::insert(T new_data)
 template<class T>
 Node<T> *BST<T>::search(T val)
 {
-    //cur = tree->root; while (cur != NULL){ if key == cur->key) return cur; else if less than go left, else go right;}
+    Node<T> *curNode = root;
+
+    while(curNode!= NULL)
+    {
+        if (val == curNode->get_data())
+        {
+            return curNode;
+        }
+        else if(curNode->get_data()>val)
+        {
+            curNode = curNode->get_left();
+        }
+        else if(curNode->get_data()<val)
+        {
+            curNode = curNode->get_right();
+        }
+    }
+    return NULL;
 }
 
 
