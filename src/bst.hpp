@@ -43,6 +43,9 @@ private:
     // helper function for insert 
     Node<T> *insertHelper(T, Node<T>*);
     std::vector<T> *inOrderHelper(std::vector<T>*, Node<T>*);
+    std::vector<T> *preOrderHelper(std::vector<T>*, Node<T>*);
+    std::vector<T> *postOrderHelper(std::vector<T>*, Node<T>*);
+    
         
 };
 
@@ -77,8 +80,7 @@ template<class T>
  std::vector<T> * BST<T>::preorder()
 {
     std::vector<T> *vec = new std::vector<T>;
-    
-    //if (node is NULL) return; print node; preorder(node->left);  preorder(node->right);
+    vec = preOrderHelper(vec, root);
     return vec;
 }
 
@@ -87,8 +89,7 @@ template<class T>
  std::vector<T> * BST<T>::postorder()
 {
     std::vector<T> *vec = new std::vector<T>;
-    //if (node is NULL) return; postorder(node->left);  poastorder(node->right);  print node;
-    
+    vec = postOrderHelper(vec, root);
     return vec;
 }
 
@@ -163,5 +164,34 @@ template<class T>
     inOrderHelper(vec, curNode->get_left());
     vec->push_back(curNode->get_data());
     inOrderHelper(vec, curNode->get_right());   
+    return vec;
+}
+
+template<class T>
+ std::vector<T> *BST<T>::preOrderHelper(std::vector<T> *vec, Node<T> *curNode)
+{
+    
+    //if (node is NULL) return; print node; preorder(node->left);  preorder(node->right);
+    if (curNode == NULL)
+    {
+        return vec;
+    }
+    vec->push_back(curNode->get_data());
+    preOrderHelper(vec, curNode->get_left());
+    preOrderHelper(vec, curNode->get_right());   
+    return vec;
+}
+template<class T>
+ std::vector<T> *BST<T>::postOrderHelper(std::vector<T> *vec, Node<T> *curNode)
+{
+    
+    //if (node is NULL) return; postorder(node->left);  poastorder(node->right);  print node;
+    if (curNode == NULL)
+    {
+        return vec;
+    }
+    postOrderHelper(vec, curNode->get_left());
+    postOrderHelper(vec, curNode->get_right());
+    vec->push_back(curNode->get_data());   
     return vec;
 }
