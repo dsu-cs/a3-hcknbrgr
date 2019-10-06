@@ -40,6 +40,10 @@ private:
     Node<T> *root;
     // the number of nodes in the tree
     int node_count;
+    // helper function for insert 
+    Node<T> *insertHelper(T, Node<T>);
+    std::vector<T> *inOrderHelper(std::vector<T>, Node<T>);
+        
 };
 
 template<class T>
@@ -60,9 +64,23 @@ BST<T>::~BST()
 }
 
 template<class T>
+ std::vector<T> * inOrderHelper(std::vector<T> *vec, Node<T> curNode)
+{
+    //if (node is NULL) return; inorder(node->left); print node; inorder(node->right);
+    if (curNode == NULL)
+    {
+        return vec;
+    }
+    inOrderHelper(vec, curNode->get_left());
+    vec.pushBack(curNode->get_data());
+    inOrderHelper(vec, curNode->get_right());    
+}
+
+template<class T>
  std::vector<T> * BST<T>::inorder()
 {
     std::vector<T> *vec = new std::vector<T>;
+    vec = inOrderHelper(*vec, *root);
 
     return vec;
 }
@@ -72,6 +90,8 @@ template<class T>
  std::vector<T> * BST<T>::preorder()
 {
     std::vector<T> *vec = new std::vector<T>;
+    
+    //if (node is NULL) return; print node; preorder(node->left);  preorder(node->right);
     return vec;
 }
 
@@ -80,21 +100,43 @@ template<class T>
  std::vector<T> * BST<T>::postorder()
 {
     std::vector<T> *vec = new std::vector<T>;
-
+    //if (node is NULL) return; postorder(node->left);  poastorder(node->right);  print node;
+    
     return vec;
+}
+
+template<class T>
+Node<T> BST<T>::*insertHelper(T val, Node<T> node)
+{
+
+    if(node==NULL)
+    {
+        Node<T>* tmp = new Node<T>;
+        tmp->set_data(val);
+        tmp->set_left(NULL);
+        tmp->set_right(NULL);
+        return tmp;
+    }
+    else
+    {
+        node->set_left(insertHelper(val, node->get_left()));        
+    }
+    return node;
+
 }
 
 template<class T>
 void BST<T>::insert(T new_data)
 {
-
+    root = insertHelper(new_data, root);
 }
+
 
 
 template<class T>
 Node<T> *BST<T>::search(T val)
 {
-
+    //cur = tree->root; while (cur != NULL){ if key == cur->key) return cur; else if less than go left, else go right;}
 }
 
 
