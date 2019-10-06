@@ -41,8 +41,8 @@ private:
     // the number of nodes in the tree
     int node_count;
     // helper function for insert 
-    Node<T> *insertHelper(T, Node<T>);
-    std::vector<T> *inOrderHelper(std::vector<T>, Node<T>);
+    Node<T> *insertHelper(T, Node<T>*);
+    std::vector<T> *inOrderHelper(std::vector<T>*, Node<T>*);
         
 };
 
@@ -64,23 +64,10 @@ BST<T>::~BST()
 }
 
 template<class T>
- std::vector<T> * inOrderHelper(std::vector<T> *vec, Node<T> curNode)
-{
-    //if (node is NULL) return; inorder(node->left); print node; inorder(node->right);
-    if (curNode == NULL)
-    {
-        return vec;
-    }
-    inOrderHelper(vec, curNode->get_left());
-    vec.pushBack(curNode->get_data());
-    inOrderHelper(vec, curNode->get_right());    
-}
-
-template<class T>
  std::vector<T> * BST<T>::inorder()
 {
     std::vector<T> *vec = new std::vector<T>;
-    vec = inOrderHelper(*vec, *root);
+    vec = inOrderHelper(vec, root);
 
     return vec;
 }
@@ -105,25 +92,7 @@ template<class T>
     return vec;
 }
 
-template<class T>
-Node<T> BST<T>::*insertHelper(T val, Node<T> node)
-{
 
-    if(node==NULL)
-    {
-        Node<T>* tmp = new Node<T>;
-        tmp->set_data(val);
-        tmp->set_left(NULL);
-        tmp->set_right(NULL);
-        return tmp;
-    }
-    else
-    {
-        node->set_left(insertHelper(val, node->get_left()));        
-    }
-    return node;
-
-}
 
 template<class T>
 void BST<T>::insert(T new_data)
@@ -153,4 +122,46 @@ template<class T>
 int BST<T>::get_size()
 {
 
+}
+
+template<class T>
+Node<T> *BST<T>::insertHelper(T val, Node<T> *node)
+{
+
+    if(node==NULL)
+    {
+        Node<T>* tmp = new Node<T>;
+        tmp->set_data(val);
+        tmp->set_left(NULL);
+        tmp->set_right(NULL);
+        return tmp;
+    }
+    else
+    {
+        if (val <= node->get_data())
+        {
+            node->set_left(insertHelper(val, node->get_left()));        
+        }
+        else
+        {
+            node->set_right(insertHelper(val, node->get_right()));
+        }   
+    }
+    return node;
+
+}
+
+template<class T>
+ std::vector<T> *BST<T>::inOrderHelper(std::vector<T> *vec, Node<T> *curNode)
+{
+    
+    //if (node is NULL) return; inorder(node->left); print node; inorder(node->right);
+    if (curNode == NULL)
+    {
+        return vec;
+    }
+    inOrderHelper(vec, curNode->get_left());
+    vec->push_back(curNode->get_data());
+    inOrderHelper(vec, curNode->get_right());   
+    return vec;
 }
