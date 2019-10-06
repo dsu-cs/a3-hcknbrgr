@@ -155,7 +155,7 @@ Node<T> *BST<T>::insertHelper(T val, Node<T> *node)
     }
     else
     {
-        if (val <= node->get_data())
+        if (val < node->get_data())
         {
             node->set_left(insertHelper(val, node->get_left()));        
         }
