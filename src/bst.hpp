@@ -42,11 +42,12 @@ private:
     int node_count;
     // helper function for insert 
     Node<T> *insertHelper(T, Node<T>*);
+    // helper function for inorder traversal
     std::vector<T> *inOrderHelper(std::vector<T>*, Node<T>*);
+    // helper function for preorder traversal
     std::vector<T> *preOrderHelper(std::vector<T>*, Node<T>*);
+    // helper function for postorder traversal
     std::vector<T> *postOrderHelper(std::vector<T>*, Node<T>*);
-
-    
         
 };
 
@@ -76,7 +77,6 @@ template<class T>
     return vec;
 }
 
-
 template<class T>
  std::vector<T> * BST<T>::preorder()
 {
@@ -84,7 +84,6 @@ template<class T>
     vec = preOrderHelper(vec, root);
     return vec;
 }
-
 
 template<class T>
  std::vector<T> * BST<T>::postorder()
@@ -100,8 +99,6 @@ void BST<T>::insert(T new_data)
     node_count++;
     root = insertHelper(new_data, root);
 }
-
-
 
 template<class T>
 Node<T> *BST<T>::search(T val)
@@ -126,14 +123,9 @@ Node<T> *BST<T>::search(T val)
     return NULL;
 }
 
-
-
 template<class T>
 void BST<T>::remove(T val)
 {
-    //3 general cases....node to remove has 0, 1, or 2 children
-
-
     Node<T> *curNode = root;
     Node<T> *parentNode = NULL;
 
@@ -141,12 +133,7 @@ void BST<T>::remove(T val)
     {
         if (val == curNode->get_data())
         {
-
-            //2. if(node to remove has one node), set parent to deleting node's child to skip over the node to remove (set pointer to other node), delete  node
-            //3. if(node has 2 children...), find the largest item in the left subtree OR find the smallest item in the right subtree
-            //      then put that node in place of the one you want to remove
-            //if removal successful, node_count--;
-            if ((curNode->get_left()==NULL)&&(curNode->get_right()==NULL))
+            if ((curNode->get_left()==NULL)&&(curNode->get_right()==NULL)) //Node has NO children
             {
                 if (parentNode == NULL)
                 {
@@ -197,7 +184,7 @@ void BST<T>::remove(T val)
                 delete(curNode);
                 node_count--;
             }
-            else // the node has 2 children
+            else // the node has 2 children, this does not remove the child, just swaps data.  removal is on recursive portion NO nodecount--
             {
                 Node<T> *successorNode = curNode->get_right();
                 T succData;
@@ -221,18 +208,13 @@ void BST<T>::remove(T val)
             curNode = curNode->get_right();
         }
     }
-    return;
-
-    
+    return;    
 }
-
-
 
 template<class T>
 int BST<T>::get_size()
 {
     return node_count;
-
 }
 
 template<class T>
@@ -259,11 +241,10 @@ Node<T> *BST<T>::insertHelper(T val, Node<T> *node)
         }   
     }
     return node;
-
 }
 
 template<class T>
- std::vector<T> *BST<T>::inOrderHelper(std::vector<T> *vec, Node<T> *curNode)
+std::vector<T> *BST<T>::inOrderHelper(std::vector<T> *vec, Node<T> *curNode)
 {
     
     //if (node is NULL) return; inorder(node->left); print node; inorder(node->right);
@@ -278,7 +259,7 @@ template<class T>
 }
 
 template<class T>
- std::vector<T> *BST<T>::preOrderHelper(std::vector<T> *vec, Node<T> *curNode)
+std::vector<T> *BST<T>::preOrderHelper(std::vector<T> *vec, Node<T> *curNode)
 {
     
     //if (node is NULL) return; print node; preorder(node->left);  preorder(node->right);
@@ -291,10 +272,10 @@ template<class T>
     preOrderHelper(vec, curNode->get_right());   
     return vec;
 }
+
 template<class T>
- std::vector<T> *BST<T>::postOrderHelper(std::vector<T> *vec, Node<T> *curNode)
-{
-    
+std::vector<T> *BST<T>::postOrderHelper(std::vector<T> *vec, Node<T> *curNode)
+{   
     //if (node is NULL) return; postorder(node->left);  poastorder(node->right);  print node;
     if (curNode == NULL)
     {
